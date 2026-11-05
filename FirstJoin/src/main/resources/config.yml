@@ -1,0 +1,39 @@
+# ==========================================================================
+#  FirstJoin - everything below is configurable. Run /firstjoin reload after editing.
+#  Text uses MiniMessage. Placeholders: %x% %z% %distance%
+#  (MiniMessage has no "orange", so the default uses the hex colour #FFA500)
+# ==========================================================================
+
+settings:
+  enabled: true
+  world: ""                      # empty = the world the player joins in (must be an overworld)
+  distance: 10000                # blocks from the world spawn
+  distance-variance: 0           # +/- random blocks added to the distance (0 = exactly `distance`)
+  max-attempts: 8                # new random spot each time no land / no village is found
+  fallback-teleport-without-village: true   # if no village is ever found, still send them (and tell them)
+  set-respawn: true              # their respawn point becomes where they land
+  set-compass-target: true       # compasses point at the village
+
+village:
+  search-radius-blocks: 1000     # the village must be within this many blocks of where they land
+
+titles:
+  welcome:
+    title: "<aqua><bold>Welcome"
+    subtitle: "<#FFA500><bold>To Get You Started, Here is the Nearest Village!"
+    fade-in-ms: 300
+    stay-ms: 6000
+    fade-out-ms: 1000
+
+actionbar:
+  format: "<white><bold>Village: X: %x%  Z: %z%  (~%distance% blocks)"
+  duration-seconds: 20           # the action bar is refreshed for this long
+
+messages:
+  prefix: "<dark_gray>[<aqua>FirstJoin<dark_gray>] <gray>"
+  no-village: "<yellow>No village was found within %distance% blocks of your spot. Explore and you'll find one!"
+  reloaded: "<green>Config reloaded."
+  test-start: "<yellow>Running the first-join teleport on you now..."
+  no-permission: "<red>You don't have permission."
+  usage: "<gray>Usage: <white>/firstjoin <reload|test>"
+  players-only: "<red>Only players can use that."

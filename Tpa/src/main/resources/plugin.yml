@@ -1,0 +1,51 @@
+name: Tpa
+version: 1.0.0
+main: dev.tpa.TpaPlugin
+api-version: '1.21'
+description: Full teleport request suite with auto-accept, whitelist, blacklist and silent mode.
+commands:
+  tpa:
+    description: Ask to teleport to a player (also /tpa whitelist|blacklist|list).
+    usage: /<command> <player>
+  tpahere:
+    description: Ask a player to teleport to you.
+    usage: /<command> <player>
+  tpauto:
+    description: Let people teleport to you instantly.
+    usage: /<command> [on|off|whitelist]
+  tpaccept:
+    description: Accept a teleport request.
+    usage: /<command> [player]
+    aliases: [tpyes]
+  tpdeny:
+    description: Deny a teleport request.
+    usage: /<command> [player]
+    aliases: [tpno]
+  tpcancel:
+    description: Cancel your outgoing requests or active teleport.
+    usage: /<command> [player]
+permissions:
+  tpa.use:
+    description: Use the teleport request commands
+    default: true
+  tpa.here:
+    description: Use /tpahere
+    default: true
+  tpa.auto:
+    description: Use /tpauto
+    default: true
+  tpa.lists:
+    description: Manage your own whitelist and blacklist
+    default: true
+  tpa.bypass.warmup:
+    description: Teleport with no warmup
+    default: op
+  tpa.bypass.cooldown:
+    description: Ignore the request cooldown
+    default: op
+  tpa.bypass.blacklist:
+    description: Send requests even if blacklisted
+    default: op
+  tpa.reload:
+    description: Reload the config
+    default: op

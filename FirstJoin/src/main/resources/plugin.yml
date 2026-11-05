@@ -1,0 +1,13 @@
+name: FirstJoin
+version: 1.0.0
+main: dev.firstjoin.FirstJoinPlugin
+api-version: '1.21'
+description: Sends brand new players far from spawn, sets their respawn there, and points them to the nearest village.
+commands:
+  firstjoin:
+    description: Admin tools for the first-join teleport.
+    usage: /<command> <reload|test>
+permissions:
+  firstjoin.admin:
+    description: Use /firstjoin reload and /firstjoin test
+    default: op

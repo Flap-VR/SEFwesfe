@@ -1,0 +1,172 @@
+# ==========================================================================
+#  Tpa - everything below is configurable. Run /tpa reload after editing.
+#  Text uses MiniMessage (https://docs.advntr.dev/minimessage/format.html)
+#  Placeholders (case-insensitive): %player% %seconds% %expire% %list% %count% %names% %type%
+# ==========================================================================
+
+settings:
+  warmup-seconds: 3             # stand still this long before teleporting (0 = instant)
+  movement-tolerance: 0.1
+  cancel-on-damage: true
+  request-expire-seconds: 60
+  request-cooldown-seconds: 5
+  max-pending-per-target: 5
+  cross-world: true
+  blocked-worlds: []            # worlds where teleport requests can't be sent from/to
+  arrive-notify: true           # tell the destination player someone arrived
+  override-other-commands: true # take /tpa, /tpaccept... back from EssentialsX/CMI so THIS plugin answers them
+
+# Used when a player has no stored preference.
+defaults:
+  auto-mode: "off"              # off | on | whitelist
+
+# /tpauto
+tpauto:
+  skip-warmup: true             # auto-accepted teleports are instant
+  applies-to-tpahere: false     # if true, auto mode also lets people pull YOU to them with /tpahere (risky!)
+
+blacklist:
+  silent-fail: false            # true = blacklisted players are told "request sent" (nothing is actually sent)
+
+# How the target hears about a request. Disabled/silent mode (the settings plugin's
+# "Disable TPA Requests") turns ALL of these off, except for whitelisted senders.
+notify:
+  chat: true
+  actionbar: true
+  title: false
+  sound: true
+
+titles:
+  warmup:
+    title: "<aqua><bold>Teleporting..."
+    subtitle: "<gray>Don't move for <yellow><bold>%seconds%</bold></yellow> seconds!"
+    fade-in-ms: 0
+    stay-ms: 1200
+    fade-out-ms: 0
+  cancelled:
+    title: "<red><bold>Teleport Cancelled"
+    subtitle: "<gray>You moved!"
+    fade-in-ms: 100
+    stay-ms: 1500
+    fade-out-ms: 400
+  incoming:
+    title: "<aqua><bold>Teleport Request"
+    subtitle: "<gray>from <white>%player%"
+    fade-in-ms: 100
+    stay-ms: 1500
+    fade-out-ms: 400
+
+actionbar:
+  enabled: true
+  length: 20
+  filled-char: "█"
+  empty-char: "░"
+  format: "<dark_gray>[<aqua>%filled%<dark_gray>%empty%<dark_gray>] <yellow>%seconds%s"
+
+sounds:
+  request:
+    sound: "block.note_block.bell"
+    volume: 1.0
+    pitch: 1.4
+  tick:
+    sound: "block.note_block.hat"
+    volume: 0.8
+    pitch: 1.0
+  cancel:
+    sound: "entity.wandering_trader.no"
+    volume: 1.0
+    pitch: 1.0
+  teleport:
+    sound: "entity.enderman.teleport"
+    volume: 0.8
+    pitch: 1.0
+  error:
+    sound: "block.note_block.bass"
+    volume: 0.8
+    pitch: 0.7
+
+effects:
+  warmup:
+    enabled: true
+    particle: "portal"
+    radius: 0.9
+  finish:
+    enabled: true
+    particle: "reverse_portal"
+    core-particle: "end_rod"
+    ring-points: 30
+    ring-radius: 1.2
+
+messages:
+  prefix: "<dark_gray>[<gradient:#22d3ee:#a855f7>TPA</gradient><dark_gray>] <gray>"
+  players-only: "<red>Only players can use that."
+  no-permission: "<red>You don't have permission."
+  reloaded: "<green>Config reloaded."
+  usage: "<gray>Use <white>/tpa help</white> to see every command."
+  help:
+    - "<gradient:#22d3ee:#a855f7><bold>TPA commands</bold></gradient>"
+    - "<white>/tpa <player> <dark_gray>- <gray>ask to teleport to someone"
+    - "<white>/tpahere <player> <dark_gray>- <gray>ask someone to teleport to you"
+    - "<white>/tpauto [on|off|whitelist] <dark_gray>- <gray>let people teleport to you instantly"
+    - "<white>/tpaccept [player] <dark_gray>- <gray>accept a request"
+    - "<white>/tpdeny [player] <dark_gray>- <gray>deny a request"
+    - "<white>/tpcancel [player] <dark_gray>- <gray>cancel your requests or teleport"
+    - "<white>/tpa list <dark_gray>- <gray>see pending requests (works even in silent mode)"
+    - "<white>/tpa whitelist <player> <dark_gray>- <gray>always get notified by them"
+    - "<white>/tpa blacklist <player> <dark_gray>- <gray>stop them from sending you requests"
+  player-not-found: "<red>Player <white>%player%</white> isn't online."
+  tpa-self: "<red>You can't teleport to yourself."
+  already-teleporting: "<red>You're already teleporting. Use <white>/tpcancel</white>."
+  traveler-busy: "<red><white>%player%</white> is already teleporting."
+  world-blocked: "<red>Teleport requests aren't allowed there."
+  cross-world-disabled: "<red>Cross-world teleports are disabled."
+  blacklisted: "<red>You can't send teleport requests to <white>%player%</white>."
+  cooldown: "<red>Wait <white>%seconds%s</white> before sending another request."
+  request-duplicate: "<red>You already have a pending request to <white>%player%</white>."
+  request-full: "<red><white>%player%</white> has too many pending requests."
+  request-sent-to: "<green>Request sent. If <white>%player%</white> accepts, you'll teleport to them. <gray>(expires in %expire%s)"
+  request-sent-here: "<green>Request sent. If <white>%player%</white> accepts, they'll teleport to you. <gray>(expires in %expire%s)"
+  request-to-you: "<aqua>%player%</aqua> wants to teleport <bold>to you</bold>. <gray>(expires in %expire%s)"
+  request-here-you: "<aqua>%player%</aqua> wants you to teleport <bold>to them</bold>. <gray>(expires in %expire%s)"
+  request-buttons: "<click:run_command:'/tpaccept %player%'><hover:show_text:'<green>Click to accept'><green><bold>[ACCEPT]</bold></green></hover></click> <click:run_command:'/tpdeny %player%'><hover:show_text:'<red>Click to deny'><red><bold>[DENY]</bold></red></hover></click>"
+  notify-actionbar-to: "<aqua>%player% <gray>wants to teleport to you <dark_gray>(/tpaccept)"
+  notify-actionbar-here: "<aqua>%player% <gray>wants you to teleport to them <dark_gray>(/tpaccept)"
+  request-expired-sender: "<gray>Your request to <white>%player%</white> expired."
+  request-expired-target: "<gray>The request from <white>%player%</white> expired."
+  request-target-left: "<gray>Your request was removed because <white>%player%</white> left."
+  no-request: "<red>You have no pending request to answer."
+  sender-offline: "<red>That player went offline."
+  request-accepted-target: "<green>You accepted <white>%player%</white>'s request."
+  request-accepted-sender: "<green><white>%player%</white> accepted your request!"
+  request-denied-target: "<gray>You denied <white>%player%</white>'s request."
+  request-denied-sender: "<red><white>%player%</white> denied your request."
+  request-cancelled: "<gray>Cancelled your outgoing request(s)."
+  nothing-to-cancel: "<red>You have nothing to cancel."
+  cancel-moved: "<red>Teleport cancelled because you moved."
+  cancel-damage: "<red>Teleport cancelled because you took damage."
+  cancel-manual: "<gray>Teleport cancelled."
+  cancel-target-left: "<red>Teleport cancelled, the other player left."
+  cancel-cross-world: "<red>Teleport cancelled, cross-world teleports are disabled."
+  teleported: "<green>Teleported to <white>%player%</white>!"
+  teleport-failed: "<red>The teleport failed."
+  arrived: "<aqua>%player%</aqua> just arrived."
+  tpauto-on: "<green>Auto-accept <bold>ON</bold>: anyone (not blacklisted) who uses /tpa on you teleports instantly."
+  tpauto-off: "<gray>Auto-accept <bold>OFF</bold>."
+  tpauto-whitelist: "<green>Auto-accept <bold>WHITELIST</bold>: only players on your whitelist teleport to you instantly."
+  list-header: "<gradient:#22d3ee:#a855f7><bold>Pending requests</bold></gradient>"
+  list-empty: "<gray>No pending requests."
+  list-incoming: "<gray>← <click:run_command:'/tpaccept %player%'><hover:show_text:'<green>Click to accept'><white>%player%</white></hover></click> <dark_gray>(%type%)"
+  list-outgoing: "<gray>→ <white>%player%</white> <dark_gray>(%type%)"
+  type-to: "wants to come to you"
+  type-here: "wants you to go to them"
+  type-to-out: "you asked to go to them"
+  type-here-out: "you asked them to come to you"
+  whitelist-added: "<green><white>%player%</white> added to your whitelist. They can notify you even in silent mode."
+  whitelist-removed: "<gray><white>%player%</white> removed from your whitelist."
+  blacklist-added: "<green><white>%player%</white> added to your blacklist. They can't send you requests."
+  blacklist-removed: "<gray><white>%player%</white> removed from your blacklist."
+  list-self: "<red>You can't add yourself."
+  list-show: "<gray>Your %list% <dark_gray>(%count%)<gray>: <white>%names%"
+  list-show-empty: "<gray>Your %list% is empty."
+  list-cleared: "<gray>Your %list% was cleared."
+  lists-usage: "<gray>Usage: <white>/tpa %list% <player|list|clear></white>"
